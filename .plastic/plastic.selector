@@ -1,0 +1,4 @@
+repository "Unity_p2p_multiplayer_card_game@SIMPgoose@cloud"
+  path "/"
+    br "/main"
+    co "/main"
