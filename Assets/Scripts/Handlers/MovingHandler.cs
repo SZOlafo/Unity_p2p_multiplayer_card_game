@@ -9,6 +9,7 @@ namespace Assets.Scripts
     public class MovingHandler : MonoBehaviour
     {
         public GameObject movableObject = null;
+        public int topCardOrder = 0;
         Vector3 mousePosition;
         Vector3 mouseOffset;
 
@@ -16,7 +17,7 @@ namespace Assets.Scripts
         // Use this for initialization
         void Start()
         {
-
+            topCardOrder = GetTopSortingOrder();
         }
 
         // Update is called once per frame
@@ -29,6 +30,7 @@ namespace Assets.Scripts
                 Collider2D[] targetsHit = Physics2D.OverlapPointAll(mousePosition);
                 Collider2D targetHit = GetTopCardFromColiders(targetsHit);
                 if(targetHit != null) {
+                    targetHit.GetComponent<Renderer>().sortingOrder = ++topCardOrder;
                     movableObject = targetHit.transform.gameObject;
                     mouseOffset = movableObject.transform.position - mousePosition;
                 }
@@ -51,6 +53,16 @@ namespace Assets.Scripts
                 .Where(x => x.transform.gameObject.CompareTag("Card"))
                 .OrderByDescending(x => x.transform.gameObject.GetComponent<Renderer>().sortingOrder)
                 .FirstOrDefault();
+        }
+
+        int GetTopSortingOrder()
+        {
+            GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();     
+            return allObjects
+                .Where(x => x.CompareTag("Card"))
+                .OrderByDescending(x => x.transform.gameObject.GetComponent<Renderer>().sortingOrder)
+                .FirstOrDefault()?
+                .GetComponent<Renderer>().sortingOrder ?? 0;
         }
     }
 }
