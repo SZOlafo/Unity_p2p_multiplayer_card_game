@@ -2,9 +2,9 @@
 
 namespace Assets.Scripts.Models
 {
-    internal class Card
+    public class Card : MonoBehaviour
     {
-        private string Color { get; set; }
-        private string Value { get; set; }
+        public CardColor Color;
+        public CardValue Value;
     }
 }
